@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>Goma Valentine 💘</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<style>
+body {
+  text-align: center;
+  font-family: 'Arial', sans-serif;
+  /* ADD YOUR IMAGE LINK BELOW */
+  background: linear-gradient(rgba(0, 0, 0, 0.4), rgba(0, 0, 0, 0.4)), 
+              url('https://images.unsplash.com/photo-1518199266791-5375a83190b7?q=80&w=2070&auto=format&fit=crop'); 
+  background-size: cover;
+  background-position: center;
+  height: 100vh;
+  margin: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-shadow: 2px 2px 10px rgba(0,0,0,0.5);
+}
+
+h1 { font-size: 2.5rem; margin-bottom: 10px; }
+p { font-size: 1.2rem; margin: 5px; }
+
+.btn-container {
+  margin-top: 30px;
+  position: relative;
+  width: 100%;
+  height: 100px;
+}
+
+button {
+  padding: 15px 30px;
+  font-size: 1.2rem;
+  border: none;
+  border-radius: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: transform 0.2s;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+
+#yes {
+  background: #ff004f;
+  color: white;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 10;
+}
+
+#no {
+  background: white;
+  color: #ff004f;
+  margin-top: 100px;
+}
+
+.heart {
+  position: absolute;
+  color: #ff758c;
+  font-size: 20px;
+  pointer-events: none;
+  animation: float 5s linear infinite;
+}
+
+@keyframes float {
+  0% { transform: translateY(0) rotate(0deg); opacity: 1; }
+  100% { transform: translateY(-100vh) rotate(360deg); opacity: 0; }
+}
+
+.kiss {
+  position: absolute;
+  font-size: 40px;
+  pointer-events: none;
+  animation: kissPop 0.8s ease-out forwards;
+}
+
+@keyframes kissPop {
+  0% { transform: scale(0); opacity: 1; }
+  100% { transform: scale(2.5); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<div id="main-content">
+  <h1>💘 Valentine Request</h1>
+  <p><b>Goma Edition</b> — Status: Pending 😌</p>
+  <p>Pros: Loyal, Funny, Will buy snacks 🍫</p>
+  <p>Cons: Might miss you too much ❤️</p>
+  <h2>Goma, will you be my Valentine?</h2>
+
+  <div class="btn-container">
+    <button id="yes">YES 💖</button>
+  </div>
+  <button id="no">NO 😢</button>
+</div>
+
+<audio id="bgMusic" loop>
+  <source src="https://www.bensound.com/bensound-music/bensound-romantic.mp3" type="audio/mpeg">
+</audio>
+
+<script>
+const yes = document.getElementById("yes");
+const no = document.getElementById("no");
+const music = document.getElementById("bgMusic");
+
+// Start music on first click (Browser bypass)
+document.addEventListener("click", () => {
+  music.play().catch(() => {}); 
+}, { once: true });
+
+// Runaway "Yes" Button Logic
+const moveButton = () => {
+  const x = Math.random() * (window.innerWidth - 150);
+  const y = Math.random() * (window.innerHeight - 150);
+  yes.style.left = x + "px";
+  yes.style.top = y + "px";
+  yes.style.transform = "none"; 
+};
+
+yes.addEventListener("mouseover", moveButton);
+yes.addEventListener("touchstart", (e) => {
+  e.preventDefault(); // Prevents clicking on mobile
+  moveButton();
+});
+
+// "No" Button Messages
+const noTexts = ["Are you sure? 😏", "Try again 😜", "Wrong choice 💔", "Not an option 😈"];
+let noCount = 0;
+no.addEventListener("click", () => {
+  no.innerText = noTexts[noCount % noTexts.length];
+  noCount++;
+});
+
+// Final Success Message
+yes.addEventListener("click", (e) => {
+  e.stopPropagation(); // Stop background kiss from spawning here
+  document.body.innerHTML = `
+    <div style="text-align:center;">
+      <h1 style="font-size:4rem;">💖</h1>
+      <h1>GOMA SAID YES!</h1>
+      <h2>You just made me the happiest person ❤️</h2>
+      <p>I hope you like snacks, because they are on the way 🍫✨</p>
+    </div>
+  `;
+});
+
+// Floating Hearts
+setInterval(() => {
+  const heart = document.createElement("div");
+  heart.className = "heart";
+  heart.innerHTML = "💖";
+  heart.style.left = Math.random() * window.innerWidth + "px";
+  heart.style.top = window.innerHeight + "px";
+  heart.style.fontSize = (Math.random() * 20 + 10) + "px";
+  document.body.appendChild(heart);
+  setTimeout(() => heart.remove(), 5000);
+}, 400);
+
+// Kiss effect on click
+document.addEventListener("click", (e) => {
+  const kiss = document.createElement("div");
+  kiss.className = "kiss";
+  kiss.innerHTML = "💋";
+  kiss.style.left = (e.pageX - 20) + "px";
+  kiss.style.top = (e.pageY - 20) + "px";
+  document.body.appendChild(kiss);
+  setTimeout(() => kiss.remove(), 800);
+});
+</script>
+
+</body>
+</html>
